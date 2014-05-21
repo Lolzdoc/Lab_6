@@ -4,10 +4,9 @@ package Railroads;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.HashMap;
 
 public class Parser {
-    private int numberOfNods;
+    private int numberOfNodes;
     private String[] nodes;
     private int NumberOfArcs = -1;
     private final String fileName = "rail.txt";
@@ -28,36 +27,39 @@ public class Parser {
 
             while (line != null) {
                     if (index == 0) {
-                        numberOfNods = Integer.parseInt(line.trim());
-                        Debug(" NumberOfNods: " + numberOfNods);
-                        nodes = new String[numberOfNods];
-                        capacityMap = new Integer[numberOfNods][numberOfNods];
-                        flowMap = new Integer[numberOfNods][numberOfNods];
-                        residualNetworkMap = new Integer[numberOfNods][numberOfNods];
-                        for(int i = 0; i<numberOfNods;i++){
-                            for(int j =0 ; j< numberOfNods;j++){
-                                capacityMap[i][j]=0;
+                        numberOfNodes = Integer.parseInt(line.trim());
+                        debug(" NumberOfNods: " + numberOfNodes);
+                        nodes = new String[numberOfNodes];
+                        capacityMap = new Integer[numberOfNodes][numberOfNodes];
+                        flowMap = new Integer[numberOfNodes][numberOfNodes];
+                        residualNetworkMap = new Integer[numberOfNodes][numberOfNodes];
+
+                        for(int i = 0; i< numberOfNodes;i++){
+                            for(int j =0 ; j< numberOfNodes;j++){
+                                capacityMap[i][j]=-2;
                                 flowMap[i][j]=0;
                                 residualNetworkMap[i][j]=0;
 
                            }
                         }
-
-                    } else if (index <= numberOfNods) {
+                    } else if (index <= numberOfNodes) {
                         nodes[index - 1] = line.trim();
-                        Debug("index : " + (index - 1) + " : " + line);
-                    } else if (index == numberOfNods+1 ) {
+                        debug("index : " + (index - 1) + " : " + line);
+                    } else if (index == numberOfNodes +1 ) {
                         NumberOfArcs = Integer.parseInt(line.trim());
-                        Debug("NumberOfArcs:" + NumberOfArcs);
+                        debug("NumberOfArcs:" + NumberOfArcs);
 
                     } else if (NumberOfArcs != -1) {
                         String[] segments = line.split(" ");
                         int node_1 = Integer.parseInt(segments[0].trim());
                         int node_2 = Integer.parseInt(segments[1].trim());
                         capacityMap[node_1][node_2] = Integer.parseInt(segments[2].trim());
-                        Debug(node_1+" "+node_2+" "+capacityMap[node_1][node_2]);
+                        capacityMap[node_2][node_1] = Integer.parseInt(segments[2].trim());
+                        debug(node_1 + " " + node_2 + " " + capacityMap[node_1][node_2]);
                         flowMap[node_1][node_2] = 0;
+                        flowMap[node_2][node_1] = 0;
                         residualNetworkMap[node_1][node_2] =Integer.parseInt(segments[2].trim());
+                        residualNetworkMap[node_2][node_1] =Integer.parseInt(segments[2].trim());
 
 
                     }
@@ -87,8 +89,8 @@ public class Parser {
     }
 
 
-    private void Debug(Object s){
-        System.out.println("Debug : "+s);
+    private void debug(Object s){
+       // System.out.println("Debug : "+s);
     }
 }
 

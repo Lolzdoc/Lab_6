@@ -53,13 +53,17 @@ public class Parser {
                         String[] segments = line.split(" ");
                         int node_1 = Integer.parseInt(segments[0].trim());
                         int node_2 = Integer.parseInt(segments[1].trim());
-                        capacityMap[node_1][node_2] = Integer.parseInt(segments[2].trim());
-                        capacityMap[node_2][node_1] = Integer.parseInt(segments[2].trim());
+                        int cap = Integer.parseInt(segments[2].trim());
+                        if(cap == -1){
+                            cap = Integer.MAX_VALUE;
+                        }
+                        capacityMap[node_1][node_2] = cap;
+                        capacityMap[node_2][node_1] = cap;
                         debug(node_1 + " " + node_2 + " " + capacityMap[node_1][node_2]);
                         flowMap[node_1][node_2] = 0;
                         flowMap[node_2][node_1] = 0;
-                        residualNetworkMap[node_1][node_2] =Integer.parseInt(segments[2].trim());
-                        residualNetworkMap[node_2][node_1] =Integer.parseInt(segments[2].trim());
+                        residualNetworkMap[node_1][node_2] =cap;
+                        residualNetworkMap[node_2][node_1] =cap;
 
 
                     }
